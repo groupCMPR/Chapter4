@@ -26,14 +26,11 @@ public:
 	void setRealNumber(double);
 	void setImaginaryNumber(double);
 	void negateComplexNumber();
-
-	//OVERLOADED OPERATORS
-	ComplexNumbers operator + (const ComplexNumbers&); //Addition
-	ComplexNumbers operator - (const ComplexNumbers&); //Subtraction
-	ComplexNumbers operator * (const ComplexNumbers&); //Multiplication
-	ComplexNumbers operator / (const ComplexNumbers&); //Division
+	void addition(double);
+	void subtraction(double);
+	void multiplication(double);
+	void division(double);
 
 	//FRIEND
 	friend ostream& operator<<(ostream&, const ComplexNumbers&);
 };
-
