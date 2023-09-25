@@ -52,49 +52,90 @@ void ComplexNumbers::setImaginaryNumber(double newImaginaryNumber)
 {
 	imaginaryNumber = newImaginaryNumber;
 }
-//Precondition : N/A
-//Postcondition: Private member imaginaryNumber is changed into negative values
+//Precondition : Passing in valid private members
+//Postcondition: Private members are changed into negative values
 void ComplexNumbers::negateComplexNumber()
 {
 	realNumber *= -1;
 	imaginaryNumber *= -1;
 }
-
-//==============================================================================
-// Overloaded Operators Section
-//==============================================================================
-//Precondition : Passing in object with valid inputs
-//Postcondition: Adding the constant and returning the changed complex number
-ComplexNumbers ComplexNumbers::operator + (const ComplexNumbers& obj)
+//Precondition : Passing in constant as any double value
+//Postcondition: Calculate the addition and output
+void ComplexNumbers::addition(double constant)
 {
 	ComplexNumbers temp;
 
-	temp.realNumber = obj.realNumber;
-	return temp;
+	temp.realNumber = realNumber;
+	temp.imaginaryNumber = imaginaryNumber;
+	temp.realNumber += constant;
+
+	cout << "\n\tC2 + value";
+	cout << "\n\t(" << realNumber << " + " << imaginaryNumber << "i) + " << constant << " = " << temp << '\n';
+
+	cout << "\n\tvalue + C2";
+	cout << "\n\t" << constant << " + (" << realNumber << " + " << imaginaryNumber << "i) = " << temp << '\n';
 }
-//Precondition : Passing in object with valid inputs
-//Postcondition: Subtracting the constant and returning the changed complex number
-ComplexNumbers ComplexNumbers::operator - (const ComplexNumbers& obj)
+//Precondition : Passing in constant as any double value
+//Postcondition: Calculate the subtraction and output
+void ComplexNumbers::subtraction(double constant)
 {
 	ComplexNumbers temp;
+	ComplexNumbers temp2;
 
-	return temp;
+	temp.realNumber = realNumber;
+	temp.imaginaryNumber = imaginaryNumber;
+	temp2.realNumber = realNumber;
+	temp2.imaginaryNumber = imaginaryNumber;
+
+	temp.realNumber = temp.realNumber - constant;
+	temp2.realNumber = constant - temp2.realNumber;
+
+	cout << "\n\tC2 - value";
+	cout << "\n\t(" << realNumber << " + " << imaginaryNumber << "i) - " << constant << " = " << temp << '\n';
+
+	cout << "\n\tvalue - C2";
+	cout << "\n\t" << constant << " - (" << realNumber << " + " << imaginaryNumber << "i) = " << temp2 << '\n';
 }
-//Precondition : Passing in object with valid inputs
-//Postcondition: Multiplying the constant and returning the changed complex number
-ComplexNumbers ComplexNumbers::operator * (const ComplexNumbers& obj)
+//Precondition : Passing in constant as any double value
+//Postcondition: Calculate the multiplication and output
+void ComplexNumbers::multiplication(double constant)
 {
 	ComplexNumbers temp;
 
-	return temp;
+	temp.realNumber = realNumber;
+	temp.imaginaryNumber = imaginaryNumber;
+	temp.realNumber *= constant;
+	temp.imaginaryNumber *= constant;
+
+	cout << "\n\tC2 * value";
+	cout << "\n\t(" << realNumber << " + " << imaginaryNumber << "i) * " << constant << " = " << temp << '\n';
+
+	cout << "\n\tvalue * C2";
+	cout << "\n\t" << constant << " * (" << realNumber << " + " << imaginaryNumber << "i) = " << temp << '\n';
 }
-//Precondition : Passing in object with valid inputs
-//Postcondition: Dividing the constant and returning the changed complex number
-ComplexNumbers ComplexNumbers::operator / (const ComplexNumbers& obj)
+//Precondition : Passing in constant as any double value
+//Postcondition: Calculate the division and output
+void ComplexNumbers::division(double constant)
 {
 	ComplexNumbers temp;
+	ComplexNumbers temp2;
 
-	return temp;
+	temp.realNumber = realNumber;
+	temp.imaginaryNumber = imaginaryNumber;
+	temp2.realNumber = realNumber;
+	temp2.imaginaryNumber = imaginaryNumber;
+
+	temp.realNumber = temp.realNumber / constant;
+	temp.imaginaryNumber = temp.imaginaryNumber / constant;
+	temp2.realNumber = constant / temp2.realNumber;
+	temp2.imaginaryNumber = constant / temp2.imaginaryNumber;
+
+	cout << setprecision(6);
+	cout << "\n\tC2 / value";
+	cout << "\n\t(" << realNumber << " + " << imaginaryNumber << "i) / " << constant << " = " << temp << '\n';
+
+	cout << "\n\tvalue / C2";
+	cout << "\n\t" << constant << " / (" << realNumber << " + " << imaginaryNumber << "i) = " << temp2 << '\n';
 }
 
 //==============================================================================
@@ -104,9 +145,26 @@ ComplexNumbers ComplexNumbers::operator / (const ComplexNumbers& obj)
 //Postcondition: Display the complex number equation
 ostream& operator<<(ostream& out, const ComplexNumbers& obj)
 {
-	if (obj.getImaginaryNumber() < 0)
+	if (obj.getImaginaryNumber() == 0)
+	{
+		out << obj.getRealNumber();
+		return out;
+	}
+
+	if (obj.getImaginaryNumber() < 0 && obj.getImaginaryNumber() != -1)
 	{
 		out << obj.getRealNumber() << " - " << -obj.getImaginaryNumber() << "i";
+		return out;
+	}
+	else if (obj.getImaginaryNumber() < 0 && obj.getImaginaryNumber() != -1)
+	{
+		out << obj.getRealNumber() << " - " << "i";
+		return out;
+	}
+
+	if (obj.getImaginaryNumber() > 0 && obj.getImaginaryNumber() != 1)
+	{
+		out << obj.getRealNumber() << " + " << obj.getImaginaryNumber() << "i";
 		return out;
 	}
 	out << obj.getRealNumber() << " + " << obj.getImaginaryNumber() << "i";
