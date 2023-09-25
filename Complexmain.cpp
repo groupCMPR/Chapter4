@@ -129,6 +129,10 @@ int optionAComplexNumber()
 			cout << "\n\tNegated the complex number C2 (a copy of C1)\n";
 			cout << "\n\t-(" << equation1 << ") = " << equation2 << '\n';
 		}break;
+		case 5: equation1.addition(inputDouble("\n\tEnter a value (double): ")); break;
+		case 6: equation1.subtraction(inputDouble("\n\tEnter a value (double): ")); break;
+		case 7: equation1.multiplication(inputDouble("\n\tEnter a value (double): ")); break;
+		case 8: equation1.division(inputDouble("\n\tEnter a value (double): ")); break;
 		default: cout << "\t\tERROR: - Invalid option. Please re-enter"; break;
 		}
 		cout << "\n";
