@@ -887,7 +887,7 @@ void optionBTwoPolynomials()
 	//data result multiplies value from player and the data from First_Poly
 	//position is set to get number with greatest power, size - i ex:
 	//3x^2 + x + 1 size = 3, position = 3-1 = 2 key = 2 (3x^2), 3-2 key = 1 (x), 3-3 key = 0 (1)
-	const double player_val = inputInteger("\n\n\tEnter a constant value: ");
+	const double player_val = inputDouble("\n\tEnter a constant value: ");
 	double data_result = 0;
 	int position = 0;
 
