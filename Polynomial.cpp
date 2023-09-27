@@ -7,6 +7,7 @@ Polynomial::Polynomial() {
 	second_size = 0;
 	final_size = 0;
 	lower_limit = -1;
+	choice = 0;
 }
 
 //MUTATORS:
@@ -69,7 +70,7 @@ void Polynomial::set_Derive() {
 //example: 2x^2+1x+2 size = 3, key = 3 data = 2/3 (2/3x^3), key = 2 data = 1/2  (1/2x^2), key = 1 data = 2 (2x)
 void Polynomial::set_Integral() {
 	for (int i = first_size - 1; i > -1; i--) {
-		Final_Poly[(i+1)] =  get_First_Poly(&i)/(i+1);
+		Final_Poly[(i + 1)] = get_First_Poly(&i) / (i + 1);
 	}
 	final_size = first_size;
 	lower_limit = 0;
@@ -78,14 +79,14 @@ void Polynomial::set_Integral() {
 //Precondition:choice to chose between subtracting/adding First_Poly and Second_Poly(both must be filled)
 //Postcondition: fills Final_Poly with subtracted/added polynomials
 //size of it will be minus a 1 (power), end will be 0 (limit is -1) 
-void Polynomial::set_Add_Sub(const bool & choice) {
+void Polynomial::set_Add_Sub(const bool& choice) {
 
 	//finds the greatest size to add on to the last polynomials
 	//stores value from first and second hash map, used in calculations
 	int greater_size = second_size;
 	double value_1 = 0, value_2 = 0;
 
-	if (first_size > second_size) 
+	if (first_size > second_size)
 		greater_size = first_size;
 
 	final_size = greater_size - 1;
@@ -107,8 +108,8 @@ void Polynomial::set_Add_Sub(const bool & choice) {
 			value_2 = Second_Poly[i];
 		}
 
-		if(choice)
-			Final_Poly[i] =  value_1 + value_2;
+		if (choice)
+			Final_Poly[i] = value_1 + value_2;
 		else
 			Final_Poly[i] = value_1 - value_2;
 	}
@@ -117,11 +118,11 @@ void Polynomial::set_Add_Sub(const bool & choice) {
 //Precondition: First_Poly and Second_Poly must be filled
 //Postcondition: multiplies all values and stores into Final_Poly
 //size of it will be minus a 1 (power), end will be 0 (limit is -1) 
-void Polynomial::set_Multiplication(){
+void Polynomial::set_Multiplication() {
 
 	//value get result of multiplied coefficients
 	lower_limit = -1;
-	double value = 0; 
+	double value = 0;
 
 	//goes through the first coefficient of First_Poly, multiplies with all elements of Second Poly
 	//if it is already in the hadh map, adds with the number stored, otherwise places in
@@ -142,10 +143,16 @@ void Polynomial::set_Multiplication(){
 	final_size = static_cast<int>(Final_Poly.size()) - 1;
 }
 
+//Precondition: number must be from 1-3
+//Postcondition: returns choice for use in the friennd outstream
+void Polynomial::set_Choice(const int & number) {
+	choice = number;
+}
+
 //ACCESSORS:
 //Precondition: N/A (initialized first_size)
 //Postcondition: returns first_size
-int Polynomial::get_First_Size() const{
+int Polynomial::get_First_Size() const {
 	return first_size;
 }
 
@@ -179,7 +186,7 @@ bool Polynomial::get_First_Empty() const {
 
 //Precondition: First_Poly must be filled, pointer pointing at address of iter
 //Postcondition: returns value at value First_Poly the value ofpointer
-double Polynomial::get_First_Poly(const int * iter) const{
+double Polynomial::get_First_Poly(const int* iter) const {
 	return First_Poly.at(*iter);
 }
 
@@ -193,4 +200,64 @@ double Polynomial::get_Second_Poly(const int* iter) const {
 //Postcondition: returns value Final_Poly from at the value of pointer
 double Polynomial::get_Final_Poly(const int* iter) const {
 	return Final_Poly.at(*iter);
+}
+
+//Precondition: class Polynomial, string prompt for display, choice gives you the ability to display 1-First_Poly
+// 2-Second_Poly, 3-Final_Poly, must have filled the correct hash map to display
+ostream& operator<<(ostream& out, const Polynomial& p1){
+
+	int size = 0;
+	double data_val = 0; //used to retrieve the value inside one of the hashmap
+	int limit = -1;
+
+	//gets the size of the Poly hashmap we are using and possibly the (lower) limit
+	//NOTICE: For First_Poly and Second_Poly the size starts at size = -1 and ends at 0 (limit is -1) as 
+	//key will start with greatest power and end with lowest Ex: size = 4 3x^3 .... + 1x^0
+	//Final_Size may follow these rules as well, but if it is made to display the integral, key starts at
+	//size and ends at 1 (limit is 0) ex: size = 4 1/4(x^4)+....1x^(1)
+	// if it is made to display a derivative, power is subtracted by 1, causing size to be subtracted by 2
+	// size - 2 to end 0 (limit -1).. 2x^2+x+2 = 4x+1 (key = 1 value = 4, key = 0, value = 1)
+	//otherwise, it will follow the same rules as First_Poly and Second_Poly
+	switch (p1.choice) {
+	case 1: size = p1.get_First_Size() - 1; break;
+	case 2: size = p1.get_Second_Size() - 1; break;
+	case 3: size = p1.get_Final_Size(); limit = p1.get_Limit();  break;
+	}
+
+	//gains first data (ex: 3x^3+2x^2+x+8, will get 3x^3 first, then 2x^2....)
+	for (int i = size; i > p1.get_Limit(); i--) {
+		switch (p1.choice) {
+		case 1: data_val = p1.get_First_Poly(&i); break;
+		case 2: data_val = p1.get_Second_Poly(&i); break;
+		case 3: data_val = p1.get_Final_Poly(&i); break;
+		}
+
+		//if not at beginning, displays + or -
+		if (i != size) {
+			if (data_val < 0) {
+				data_val *= -1;
+				out << " - ";
+			}
+			else
+				out << " + ";
+		}
+
+
+
+		//examples for each format: x^3, x, 3
+		if (data_val == 0) {
+			out << "0";
+		}
+		else if (i > 1) {
+			out << data_val << "x^" << i;
+		}
+		else if (i == 1) {
+			out << data_val << "x";
+		}
+		else {
+			out << data_val;
+		}
+	}
+
+	return out;
 }
