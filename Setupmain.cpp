@@ -7,6 +7,7 @@
 
 //HEADER FILES
 #include "ComplexNumbers.h"
+#include "ComplexNumbers.cpp"
 #include "Rational.h"
 #include "Polynomial.h"
 using namespace std;
