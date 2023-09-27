@@ -547,8 +547,8 @@ int optionBMultipleRationalNumbers()
 // Option 3 - Polynomials Section
 //================================================================================================================== 
 //Precondition: N/A
-//Postcondition: Redirects to optionASinglePolynomial() or optionBTwoPolynomials()
-int polynomials()
+//Postcondition: Redirects to optionASinglePolynomial() or optionB
+void polynomials()
 {
 	do
 	{
@@ -565,23 +565,23 @@ int polynomials()
 		cout << "\n\t\t0> return";
 		cout << "\n\t" << string(100, char(205));
 
-		switch (toupper(inputChar("\n\t\tOption: ", static_cast<string>("AB0"))))
+		switch (inputChar("\n\t\tOption: ", static_cast<string>("AB0")))
 		{
-		case '0': return 0;
+		case '0': return;
 		case 'A': system("cls"); optionASinglePolynomial(); break;
 		case 'B': system("cls"); optionBTwoPolynomials(); break;
 
-		default: cout << "\t\tERROR: - Invalid option. Please re-enter"; break;
+		default: cout << "\n\tERROR: - Invalid option. Please re-enter"; break;
 		}
 		cout << "\n";
 		system("pause");
 	} while (true);
 
-	return 0;
 }
+
 //Precondition: N/A
 //Postcondition: Redirects to number_of_terms(), specify_coefficients(), eval_exp(), derivative(), integral()
-int optionASinglePolynomial()
+void optionASinglePolynomial()
 {
 	Polynomial p1;
 
@@ -601,7 +601,7 @@ int optionASinglePolynomial()
 
 		switch (inputInteger("\n\t\tOption: ", 0, 5))
 		{
-		case 0: return 0;
+		case 0: return;
 		case 1: number_of_terms(p1, true, "polynomial: "); break;
 		case 2: specify_coefficients(p1, true);  break;
 		case 3: eval_exp(p1); break;
@@ -613,26 +613,22 @@ int optionASinglePolynomial()
 		system("pause");
 	} while (true);
 
-	return 0;
 }
 
 //Precondition: class Polynomial, true or false to indicate whether you will manipulate hash maps: First_Poly or Second_Poly, prompt to cout
 //Postcondition: sets size of First_Poly or Second_Poly 
 //NOTICE: we only clear First_Poly because Second_Poly is used in Option B, where we deallocate the class Polynomial, we clear First_Poly 
 //because we want to create an error message whenever the player attempts to reuse the past hashmap
-void number_of_terms(Polynomial& p1, bool choice, string prompt) 
-{
+void number_of_terms(Polynomial& p1, bool choice, string prompt) {
+
 	int size = (inputInteger("\n\tEnter the number of terms(1..100) for the " + prompt, 1, 100));
 
-	switch (choice) 
-	{
-	case true: 
-	{
+	switch (choice) {
+	case true: {
 		p1.set_First_Size(&size);
 		p1.set_First_Clear();
 	} break;
-	case false: 
-	{
+	case false: {
 		p1.set_Second_Size(&size);
 	}
 	}
@@ -641,101 +637,83 @@ void number_of_terms(Polynomial& p1, bool choice, string prompt)
 //Precondition: class Polynomial, true or false to indicate whether you will manipulate hash maps: First_Poly or Second_Poly, must have already
 //used number_of_terms to set a size
 //Postcondition: fills in coefficients in First_Poly or Second_Poly, the [key] is useful as it will show us the power of the coefficient
-void specify_coefficients(Polynomial& p1, bool choice) 
-{
+void specify_coefficients(Polynomial& p1, bool choice) {
 	int size = 0;
 
 	//we clear the First_Poly just in case of errors
 	//we do not clear Second_Poly as it is deallocated after use in Option B
-	switch (choice) 
-	{
-	case true: 
-	{
+	switch (choice) {
+	case true: {
 		p1.set_First_Clear();
 		size = p1.get_First_Size();
 	} break;
-	case false: 
-	{
+	case false: {
 		size = p1.get_Second_Size();
 	} break;
 	}
 
 	//setting is set in a way that will ensure it has the proper power (size - i)
 	double number = 0;
+	for (int i = 1; i <= size; i++) {
+		number = inputDouble("\n\tEnter the coefficient for term #" + to_string(i) + " :");
 
-	cout << '\n';
-	for (int i = 1; i <= size; i++) 
-	{
-		number = inputDouble("\tEnter the coefficient for term #" + to_string(i) + ": ");
-
-		switch (choice) 
-		{
+		switch (choice) {
 		case true: p1.set_First_Poly(&i, &number); break;
 		case false: p1.set_Second_Poly(&i, &number); break;
 		}
 	}
-	display_Poly(p1, "P1(x) = ", 1);
-	cout << '\n';
 }
 
 //Precondition: class Polynomial, must have used specify_coefficients to set up First_Poly and valid size
 //Postcondition: will display the number if it were inputted into x of a polynomial in First_Poly 
-void eval_exp(const Polynomial& p1)
-{
+void eval_exp(Polynomial& p1) {
 
 	//error messages: empty hashmap, empty size
-	if (p1.get_First_Size() == 0) 
-	{
+	if (p1.get_First_Size() == 0) {
 		cout << "\n\tERROR: Please confirm size of polynomials. Please chose option 1.";
 		return;
 	}
 
-	if (p1.get_First_Empty()) 
-	{
+	if (p1.get_First_Empty()) {
 		cout << "\n\tERROR: There are no inputted polynomials. Please chose option 2.";
 		return;
 	}
 
-	display_Poly(p1, "P1(x) = ", 1);
+	//for always displaying how the polynomial looks
+	cout << "\n\tP1(x) = ";
+	p1.set_Choice(1);
+	cout << p1;
 
 	//temp is used to store coefficient(number)^(power)
 	//adds all of temp to be used to display final answer
 	double sum = 0, temp = 0;
-	int number = inputInteger("\n\tEnter the value of x to evaluate the polynomial: ");
+	int number = inputInteger("\n\tEnter the value of x to evaluate the polynomial:");
 	cout << "\n\t";
 
-	for (int i = p1.get_First_Size() - 1; i > -1; i--) 
-	{
+	for (int i = p1.get_First_Size() - 1; i > -1; i--) {
 		temp = (p1.get_First_Poly((&i)) * pow(number, i)) * 1.00;
 
 		if (i == 0)
-		{
-			cout << "+" << setw(9) << right << temp << " <-" << setw(10) << right;
-			cout << setprecision(6) << p1.get_First_Poly((&i)) << "x^" << i << "\n\t";
-			sum += temp;
-			continue;
-		}
-		cout << setw(10) << right << temp << " <-" << setw(10) << right;
-		cout << setprecision(6) << p1.get_First_Poly((&i)) << "x^" << i << "\n\t";
+			cout << "+";
+
+		cout << temp << "<-\t" << p1.get_First_Poly((&i)) << "x^" << i << "\n\t";
 		sum += temp;
 	}
 
-	cout << string(100, char(196)) << "\n\t" << setw(10) << right << sum;
+	cout << string(100, char(196)) << "\n\t" << sum;
 }
 
 //Precondition: class Polynomial, must have filled in First_Poly and valid size
 //Postcondition: will do the derivative of First_Poly, store it into Final_Poly, and display
-void derivative(Polynomial& p1) 
-{
+void derivative(Polynomial& p1) {
+
 	//error messages: empty hashmap, empty size
-	if (p1.get_First_Size() == 0) 
-	{
+	if (p1.get_First_Size() == 0) {
 		cout << "\n\tERROR: Please confirm size of polynomials. Please chose option 1.";
 		return;
 	}
 
-	if (p1.get_First_Empty()) 
-	{
+	if (p1.get_First_Empty()) {
 		cout << "\n\tERROR: There are no inputted polynomials. Please chose option 2.";
 		return;
 	}
@@ -743,146 +721,98 @@ void derivative(Polynomial& p1)
 	//clears Final_Poly[] to make sure it doesn't have a greater size than the new one
 	p1.set_Final_Clear();
 
-	display_Poly(p1, "Polynomial(x) = ", 1);
+	
+	cout << "\n\tPolynomial(x) = ";
+	p1.set_Choice(1);
+	cout << p1;
 
 	p1.set_Derive();
 
-	display_Poly(p1, "Derivative    = ", 3);
-	cout << '\n';
+	cout << "\n\tDerivative    = ";
+	p1.set_Choice(3);
+	cout << p1;
+
 }
 
 //Precondition: class Polynomial, must have filled in First_Poly and valid size
 //Postcondition: will do the integral of First_Poly, store it into Final_Poly, and display
-void integral(Polynomial& p1) 
-{
+void integral(Polynomial& p1) {
+
 	//error messages: empty hashmap, empty size
-	if (p1.get_First_Size() == 0) 
-	{
+	if (p1.get_First_Size() == 0) {
 		cout << "\n\tERROR: Please confirm size of polynomials. Please chose option 1.";
 		return;
 	}
 
-	if (p1.get_First_Empty()) 
-	{
+	if (p1.get_First_Empty()) {
 		cout << "\n\tERROR: There are no inputted polynomials. Please chose option 2.";
 		return;
 	}
 
 	p1.set_Final_Clear();
-	display_Poly(p1, "Polynomial(x) = ", 1);
+
+	cout << "\n\tPolynomial(x) = ";
+	p1.set_Choice(1);
+	cout << p1;
 
 	p1.set_Integral();
-	display_Poly(p1, "Integral      = ", 3);
-	cout << '\n';
-}
 
-//Precondition: class Polynomial, string prompt for display, choice gives you the ability to display 1-First_Poly
-// 2-Second_Poly, 3-Final_Poly, must have filled the correct hash map to display
-//Postcondition: will display contents in 1-First_Poly 2-Second_Poly, 3-Final_Poly in format of polynomial
-void display_Poly(const Polynomial& p1, const string& prompt, const int& choice) 
-{
+	cout << "\n\tIntegral      = ";
+	p1.set_Choice(3);
+	cout << p1;
 
-	cout << "\n\t" << prompt;
-	int size = 0;
-	double data_val = 0; //used to retrieve the value inside one of the hashmap
-	int limit = -1;
-
-	//gets the size of the Poly hashmap we are using and possibly the (lower) limit
-	//NOTICE: For First_Poly and Second_Poly the size starts at size = -1 and ends at 0 (limit is -1) as 
-	//key will start with greatest power and end with lowest Ex: size = 4 3x^3 .... + 1x^0
-	//Final_Size may follow these rules as well, but if it is made to display the integral, key starts at
-	//size and ends at 1 (limit is 0) ex: size = 4 1/4(x^4)+....1x^(1)
-	// if it is made to display a derivative, power is subtracted by 1, causing size to be subtracted by 2
-	// size - 2 to end 0 (limit -1).. 2x^2+x+2 = 4x+1 (key = 1 value = 4, key = 0, value = 1)
-	//otherwise, it will follow the same rules as First_Poly and Second_Poly
-	switch (choice)
-	{
-	case 1: size = p1.get_First_Size() - 1; break;
-	case 2: size = p1.get_Second_Size() - 1; break;
-	case 3: size = p1.get_Final_Size(); limit = p1.get_Limit();  break;
-	default: "\n\tERROR, input must be between 1 and 3"; return;
-	}
-
-	//gains first data (ex: 3x^3+2x^2+x+8, will get 3x^3 first, then 2x^2....)
-	for (int i = size; i > p1.get_Limit(); i--) 
-	{
-
-		switch (choice) 
-		{
-		case 1: data_val = p1.get_First_Poly(&i); break;
-		case 2: data_val = p1.get_Second_Poly(&i); break;
-		case 3: data_val = p1.get_Final_Poly(&i); break;
-		}
-
-		//if not at beginning, displays + or -
-		if (i != size) 
-		{
-			if (data_val < 0) 
-			{
-				data_val *= -1;
-				cout << " - ";
-			}
-			else if (data_val == 0)
-			{
-				continue;
-			}
-			else
-				cout << " + ";
-		}
-
-		//examples for each format: x^3, x, 3
-		if (i > 1)
-		{
-			cout << data_val << "x^" << i;
-		}
-		else if (i == 1) 
-		{
-			cout << data_val << "x";
-		}
-		else
-		{
-			cout << data_val;
-		}
-	}
 }
 
 //Precondition: N/A
 //Postcondition: fills in First_Poly and Second_Poly, adds/subtracts/multiplies them, and multiplies a value
 //to both polynomials 
-void optionBTwoPolynomials() 
-{
+void optionBTwoPolynomials() {
 	Polynomial p2;
 	cout << "\n\tB> Two Polynomials";
 
 	//gets size, fills in First_Poly, displays
 	number_of_terms(p2, true, "first polynomial (P1): ");
 	specify_coefficients(p2, true);
-	display_Poly(p2, "The first polynomial (P1) is entered: ", 1);
-	cout << '\n';
+
+	cout << "\n\tThe first polynomial (P1) is entered: ";
+	p2.set_Choice(1);
+	cout << p2;
 
 	//gets size, fills in Second_Poly, displays
 	number_of_terms(p2, false, "second polynomial (P2): ");
 	specify_coefficients(p2, false);
-	display_Poly(p2, "The second polynomial (P2) is entered: ", 2);
-	cout << '\n';
+
+
+	cout << "\n\tThe second polynomial (P2) is entered: ";
+	p2.set_Choice(2);
+	cout << p2;
 
 	//adds both poly, display
 	p2.set_Add_Sub(true);
-	display_Poly(p2, "Addition of polynomials       -> P1 + P2 = ", 3);
+
+	cout << "\n\tAddition of polynomials       -> P1 + P2 = ";
+	p2.set_Choice(3);
+	cout << p2;
 
 	//clears to ensure it will not retain past values
 	p2.set_Final_Clear();
 
 	//subtracts both poly, display
 	p2.set_Add_Sub(false);
-	display_Poly(p2, "Subtraction of polynomials    -> P1 - P2 = ", 3);
+
+	cout << "\n\tSubtraction of polynomials     -> P1 - P2 = ";
+	p2.set_Choice(3);
+	cout << p2;
 
 	//clears Final_Poly
 	p2.set_Final_Clear();
 
 	//multiplies both poly, display
 	p2.set_Multiplication();
-	display_Poly(p2, "Multiplication of polynomials -> P1 * P2 = ", 3);
+
+	cout << "\n\tMultiplication of polynomials -> P1 * P2 = ";
+	p2.set_Choice(3);
+	cout << p2;
 
 	//data result multiplies value from player and the data from First_Poly
 	//position is set to get number with greatest power, size - i ex:
@@ -891,23 +821,28 @@ void optionBTwoPolynomials()
 	double data_result = 0;
 	int position = 0;
 
-	for (int i = 1; i <= p2.get_First_Size(); i++) 
-	{
+	for (int i = 1; i <= p2.get_First_Size(); i++) {
 		position = p2.get_First_Size() - i;
 		data_result = player_val * p2.get_First_Poly(&position);
 		p2.set_First_Poly(&i, &data_result);
 	}
 
 	//displays new First_Poly
-	display_Poly(p2, to_string(player_val) + " * Polynomial(P1) = ", 1);
+	cout << "\n\t" << to_string(player_val) << "* Polynomial(P1) = ";
+	p2.set_Choice(1);
+	cout << p2;
 
 	//multiplies value with Second_Poly elements, then displays
-	for (int i = 1; i <= p2.get_Second_Size(); i++) 
-	{
+	for (int i = 1; i <= p2.get_Second_Size(); i++) {
 		position = p2.get_Second_Size() - i;
 		data_result = player_val * p2.get_Second_Poly(&position);
 		p2.set_Second_Poly(&i, &data_result);
 	}
 
-	display_Poly(p2, to_string(player_val) + " * Polynomial(P2) = ", 2);
+
+	//displays new First_Poly
+	cout << "\n\t" << to_string(player_val) << "* Polynomial(P2) = ";
+	p2.set_Choice(2);
+	cout << p2;
+
 }
