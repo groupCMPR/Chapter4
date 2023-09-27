@@ -174,6 +174,7 @@ void caseTwoOptionA() {
 		}
 		case 7:
 		{
+
 			int number = inputInteger("\n\t\t\tEnter an integer value: ");
 			r2 = r1 - number;
 			
@@ -207,17 +208,27 @@ void caseTwoOptionA() {
 		}
 		case 9:
 		{
-			int number = inputInteger("\n\t\t\tEnter an integer value: ");
-			r2 = r1 / number;
-			
+			try {
+				int number = inputInteger("\n\t\t\tEnter an integer value: ");
+				r2 = r1 / number;
 
-			cout << "\n\t\t\tR2 / value";
-			cout << "\n\t\t\t(" << r1 << ") / " << number << " = " << r2;
-			cout << endl;
-			r2 = number / r1;
-			
-			cout << "\n\t\t\tvalue / R2";
-			cout << "\n\t\t\t" << number << " / (" << r1 << ") = " << r2;
+
+				cout << "\n\t\t\tR2 / value";
+				cout << "\n\t\t\t(" << r1 << ") / " << number << " = " << r2;
+				cout << endl;
+				r2 = number / r1;
+
+				cout << "\n\t\t\tvalue / R2";
+				cout << "\n\t\t\t" << number << " / (" << r1 << ") = " << r2;
+			}
+			catch (Rational::ZeroDenominator& e)
+			{
+				cout << "\n\t\t\tR2 / value";
+				cout << "\n\t\t\t(" << r1 << ") / " << e.toString() << " = " << e.toString();
+				cout << endl;
+				cout << "\n\t\t\tvalue / R2";
+				cout << "\n\t\t\t" << e.toString() << " / (" << r1 << ") = " << e.toString();
+			}
 			break;
 		}
 
