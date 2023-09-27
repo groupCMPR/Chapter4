@@ -407,13 +407,12 @@ int optionARationalNumber()
 				cout << "\n\t\t\tvalue / R2";
 				cout << "\n\t\t\t" << number << " / (" << r1 << ") = " << r2;
 			}
-			catch (Rational::ZeroDenominator& e)
-			{
+			catch (Rational::ZeroDenominator& e){
 				cout << "\n\t\t\tR2 / value";
-				cout << "\n\t\t\t(" << r1 << ") / " << e.toString() << " = " << e.toString();
+				cout << "\n\t\t\t(" << r1 << ") /  0 = undefine";
 				cout << endl;
 				cout << "\n\t\t\tvalue / R2";
-				cout << "\n\t\t\t" << e.toString() << " / (" << r1 << ") = " << e.toString();
+				cout << "\n\t\t\t" << "0 / (" << r1 << ") = 0/1";
 			}
 			break;
 		}
