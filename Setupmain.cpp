@@ -547,7 +547,7 @@ int optionBMultipleRationalNumbers()
 //================================================================================================================== 
 //Precondition: N/A
 //Postcondition: Redirects to optionASinglePolynomial() or optionB
-void polynomials()
+int polynomials()
 {
 	do
 	{
@@ -566,7 +566,7 @@ void polynomials()
 
 		switch (inputChar("\n\t\tOption: ", static_cast<string>("AB0")))
 		{
-		case '0': return;
+		case '0': return 0;
 		case 'A': system("cls"); optionASinglePolynomial(); break;
 		case 'B': system("cls"); optionBTwoPolynomials(); break;
 
@@ -575,12 +575,12 @@ void polynomials()
 		cout << "\n";
 		system("pause");
 	} while (true);
-
+  	return 0;
 }
 
 //Precondition: N/A
 //Postcondition: Redirects to number_of_terms(), specify_coefficients(), eval_exp(), derivative(), integral()
-void optionASinglePolynomial()
+int optionASinglePolynomial()
 {
 	Polynomial p1;
 
@@ -600,7 +600,7 @@ void optionASinglePolynomial()
 
 		switch (inputInteger("\n\t\tOption: ", 0, 5))
 		{
-		case 0: return;
+		case 0: return 0;
 		case 1: number_of_terms(p1, true, "polynomial: "); break;
 		case 2: specify_coefficients(p1, true);  break;
 		case 3: eval_exp(p1); break;
@@ -611,7 +611,7 @@ void optionASinglePolynomial()
 		cout << "\n";
 		system("pause");
 	} while (true);
-
+	return 0;
 }
 
 //Precondition: class Polynomial, true or false to indicate whether you will manipulate hash maps: First_Poly or Second_Poly, prompt to cout
