@@ -32,7 +32,6 @@ void specify_coefficients(Polynomial&, bool);
 void eval_exp(Polynomial&);
 void derivative(Polynomial&);
 void integral(Polynomial&);
-void display_Poly(const Polynomial&, const string&, const int&);
 void optionBTwoPolynomials();
 
 int main()
