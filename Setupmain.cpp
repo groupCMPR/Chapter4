@@ -29,7 +29,7 @@ int polynomials();
 int optionASinglePolynomial();
 void number_of_terms(Polynomial&, bool, string);
 void specify_coefficients(Polynomial&, bool);
-void eval_exp(const Polynomial&);
+void eval_exp(Polynomial&);
 void derivative(Polynomial&);
 void integral(Polynomial&);
 void display_Poly(const Polynomial&, const string&, const int&);
