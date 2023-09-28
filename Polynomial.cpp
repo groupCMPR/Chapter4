@@ -202,8 +202,9 @@ double Polynomial::get_Final_Poly(const int* iter) const {
 	return Final_Poly.at(*iter);
 }
 
-//Precondition: class Polynomial, string prompt for display, choice gives you the ability to display 1-First_Poly
+//Precondition: outstream to display, class Polynomial, choice gives you the ability to display 1-First_Poly
 // 2-Second_Poly, 3-Final_Poly, must have filled the correct hash map to display
+//Postcondition: displays polynomial to be displayed in main
 ostream& operator<<(ostream& out, const Polynomial& p1) {
 
 	int size = 0;
