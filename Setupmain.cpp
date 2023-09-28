@@ -554,7 +554,7 @@ int optionBMultipleRationalNumbers()
 //================================================================================================================== 
 // Option 3 - Polynomials Section
 //================================================================================================================== 
-//Precondition: N/A
+//Precondition: Called from main
 //Postcondition: Redirects to optionASinglePolynomial() or optionB
 int polynomials()
 {
@@ -584,10 +584,10 @@ int polynomials()
 		cout << "\n";
 		system("pause");
 	} while (true);
-  	return 0;
+	return 0;
 }
 
-//Precondition: N/A
+//Precondition: called from polynomials()
 //Postcondition: Redirects to number_of_terms(), specify_coefficients(), eval_exp(), derivative(), integral()
 int optionASinglePolynomial()
 {
@@ -611,7 +611,12 @@ int optionASinglePolynomial()
 		{
 		case 0: return 0;
 		case 1: number_of_terms(p1, true, "polynomial: "); break;
-		case 2: specify_coefficients(p1, true);  break;
+		case 2: {
+			specify_coefficients(p1, true);
+			cout << "\n\tThe P(x) is entered: ";
+			p1.set_Choice(1);
+			cout << p1;
+		}break;
 		case 3: eval_exp(p1); break;
 		case 4: derivative(p1); break;
 		case 5: integral(p1); break;
@@ -729,7 +734,7 @@ void derivative(Polynomial& p1) {
 	//clears Final_Poly[] to make sure it doesn't have a greater size than the new one
 	p1.set_Final_Clear();
 
-	
+
 	cout << "\n\tPolynomial(x) = ";
 	p1.set_Choice(1);
 	cout << p1;
