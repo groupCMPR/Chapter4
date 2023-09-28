@@ -145,7 +145,7 @@ void Polynomial::set_Multiplication() {
 
 //Precondition: number must be from 1-3
 //Postcondition: returns choice for use in the friennd outstream
-void Polynomial::set_Choice(const int & number) {
+void Polynomial::set_Choice(const int& number) {
 	choice = number;
 }
 
@@ -204,7 +204,7 @@ double Polynomial::get_Final_Poly(const int* iter) const {
 
 //Precondition: class Polynomial, string prompt for display, choice gives you the ability to display 1-First_Poly
 // 2-Second_Poly, 3-Final_Poly, must have filled the correct hash map to display
-ostream& operator<<(ostream& out, const Polynomial& p1){
+ostream& operator<<(ostream& out, const Polynomial& p1) {
 
 	int size = 0;
 	double data_val = 0; //used to retrieve the value inside one of the hashmap
@@ -242,13 +242,8 @@ ostream& operator<<(ostream& out, const Polynomial& p1){
 				out << " + ";
 		}
 
-
-
 		//examples for each format: x^3, x, 3
-		if (data_val == 0) {
-			out << "0";
-		}
-		else if (i > 1) {
+		if (i > 1) {
 			out << data_val << "x^" << i;
 		}
 		else if (i == 1) {
